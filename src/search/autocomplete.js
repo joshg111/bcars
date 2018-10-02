@@ -1,6 +1,35 @@
 import {searchItems, car_data as carData} from './obj';
 import Fuse from 'fuse.js';
 
+
+function mapFuseToSearchResults(input) {
+  return input.map((x) => {
+    return new SearchResult(x.matches[0].value.toLowerCase(), x.matches[0].indices);
+  });
+}
+
+function mapTextToSearchResults(input) {
+  return input.map((x) => {
+    return new SearchResult(x.toLowerCase(), []);
+  });
+}
+
+class SearchResult {
+  constructor(matchValue, indicies) {
+    this.matchValue = matchValue
+    this.indicies = indicies
+  }
+
+  getMatchValue() {
+    return this.matchValue;
+  }
+
+  getIndicies() {
+    return this.indicies;
+  }
+}
+
+
 var options = {
   shouldSort: true,
   tokenize: true,
@@ -43,12 +72,12 @@ function search(input, searches) {
   }
 
   for(var search of searches) {
-    if(!search.source) {
-      continue;
-    }
+    // if(!search.source) {
+    //   continue;
+    // }
 
     var searchResults = search.matcher(search.source);
-    searchResults = searchResults.slice(0,5);
+
     for(var searchRes of searchResults) {
       ranks.push({searchRes, source: search.source});
     }
@@ -59,8 +88,8 @@ function search(input, searches) {
   // console.log("ranks = ", ranks);
   for(var rank of ranks) {
     res.push({kept: input.replace(new RegExp(rank.source + "$"), ''),
-              replaced: rank.searchRes.matches[0].value.toLowerCase(),
-              indicies: rank.searchRes.matches[0].indices});
+              replaced: rank.searchRes.getMatchValue(),
+              indicies: rank.searchRes.getIndicies()});
   }
   return res;
 }
@@ -71,18 +100,22 @@ function search(input, searches) {
 export default async function findAutocompletes(input) {
   var result = [];
 
-  var source = input.match(/[\s]*([^\s]+)[\s]+(\w+)$/i);
+  var source = input.match(/[\s]*([^\s]+)[\s]+(\w*)$/i);
   if(source && source[1].toUpperCase() in carData) {
-    var modelFuse = new Fuse(carData[source[1].toUpperCase()], {...options, keys: null});
-    var s1 = source[1] + " " + source[2]
-    result = search(input, [{source: source[2], matcher: (x) => modelFuse.search(x).slice(0,10)}]);
+    if(!source[2]) {
+      result = search(input, [{source: source[2], matcher: (x) => mapTextToSearchResults(carData[source[1].toUpperCase()])}]);
+    }
+    else {
+      var modelFuse = new Fuse(carData[source[1].toUpperCase()], {...options, keys: null});
+      result = search(input, [{source: source[2], matcher: (x) => mapFuseToSearchResults(modelFuse.search(x))}]);
+    }
 
   }
 
   if(result == false) {
     source = input.match(/[\s]*([^\s]+)$/i);
     if(source) {
-      result = result.concat(search(input, [{source: source[1], matcher: fuse.search.bind(fuse)}]));
+      result = result.concat(search(input, [{source: source[1], matcher: (x) => mapFuseToSearchResults(fuse.search(x))}]));
     }
   }
 
