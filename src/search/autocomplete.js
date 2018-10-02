@@ -75,18 +75,20 @@ export default async function findAutocompletes(input) {
   if(source && source[1].toUpperCase() in carData) {
     var modelFuse = new Fuse(carData[source[1].toUpperCase()], {...options, keys: null});
     var s1 = source[1] + " " + source[2]
-    result = search(input, [{source: source[2], matcher: (x) => modelFuse.search(x).slice(0,5)}]);
+    result = search(input, [{source: source[2], matcher: (x) => modelFuse.search(x).slice(0,10)}]);
 
   }
 
-  source = input.match(/[\s]*([^\s]+)$/i);
-  if(source) {
-    result = result.concat(search(input, [{source: source[1], matcher: fuse.search.bind(fuse)}]));
+  if(result == false) {
+    source = input.match(/[\s]*([^\s]+)$/i);
+    if(source) {
+      result = result.concat(search(input, [{source: source[1], matcher: fuse.search.bind(fuse)}]));
+    }
   }
 
-  result = result.filter(function(item, pos) {
-      return result.indexOf(item) == pos;
-  })
+  // result = result.filter(function(item, pos) {
+  //     return result.indexOf(item) == pos;
+  // })
 
   var i = 0;
   for(var res of result) {
