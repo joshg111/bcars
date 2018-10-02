@@ -1,6 +1,7 @@
 import React from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
 import findAutocompletes from '../search/autocomplete'
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 
@@ -99,9 +100,11 @@ class Autocomplete extends React.Component {
 
 
     return (
-      <View style={styles.autocomplete}>
+      <KeyboardAvoidingView style={styles.autocomplete} behavior='padding' keyboardVerticalOffset={100}>
+
+        <View style={{flexDirection: 'row'}}>
         <TextInput
-          style={{height: 40, borderColor: 'purple', borderWidth: 1}}
+          style={{flex: 8, height: 40, borderColor: 'purple', borderWidth: 1}}
           onChangeText={(text) => this.onChangeText(text)}
           value={this.state.text}
           placeholder='Toyota sedan'
@@ -111,19 +114,23 @@ class Autocomplete extends React.Component {
           ref={(input) => this.textInput = input}
         />
 
-        <KeyboardAvoidingView style={{flex: 1}} behavior='position'>
+        <TouchableOpacity style={{flex: 1}}>
+          <MaterialIcons  name="search" size={32} color="black" />
+        </TouchableOpacity>
 
-          <FlatList
-            
-            data={this.state.autocompletes}
-            keyExtractor = { (item, index) => index.toString() }
-            renderItem={this._renderItem}
-            keyboardShouldPersistTaps={'handled'}
-            ItemSeparatorComponent={this.renderSeparator}
-          />
+        </View>
 
-        </KeyboardAvoidingView>
-      </View>
+        <FlatList
+          style={{flex: 1}}
+          data={this.state.autocompletes}
+          keyExtractor = { (item, index) => index.toString() }
+          renderItem={this._renderItem}
+          keyboardShouldPersistTaps={'handled'}
+          ItemSeparatorComponent={this.renderSeparator}
+        />
+
+      </KeyboardAvoidingView>
+
     );
   }
 }
