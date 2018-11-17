@@ -1,52 +1,35 @@
-import { observable, action, runInAction } from "mobx";
+import { observable, action, runInAction, extendObservable } from "mobx";
 import { observer, inject } from 'mobx-react'
 import { create, persist } from 'mobx-persist'
 import { AsyncStorage } from 'react-native';
 
 
 const INITIAL_STATE = {
-  minPrice: "0",
-  maxPrice: "20000",
-  minYear: "2002",
-  maxYear: "2018",
-  minMiles: "0",
-  maxMiles: "180000"
+  min_price: "0",
+  max_price: "20000",
+  min_auto_year: "2002",
+  max_auto_year: "2018",
+  min_auto_miles: "0",
+  max_auto_miles: "180000",
+  location: ""
+}
+
+const SCHEMA = {
+  min_price: true,
+  max_price: true,
+  min_auto_year: true,
+  max_auto_year: true,
+  min_auto_miles: true,
+  max_auto_miles: true,
+  location: true
 }
 
 const hydrate = create({ storage: AsyncStorage })
 
 class FilterScreenStore {
 
-  @persist
-  @observable
-  minPrice = INITIAL_STATE.minPrice
-
-  @persist
-  @observable
-  maxPrice = INITIAL_STATE.maxPrice
-
-  @persist
-  @observable
-  minYear = INITIAL_STATE.minYear
-
-  @persist
-  @observable
-  maxYear = INITIAL_STATE.maxYear
-
-  @persist
-  @observable
-  minMiles = INITIAL_STATE.minMiles
-
-  @persist
-  @observable
-  maxMiles = INITIAL_STATE.maxMiles
-
-  @persist
-  @observable
-  location = "";
-
   constructor() {
-    // this.getLocation().then((res) => runInAction(() => {this.location = res; console.log("loc", this.location)}))
+    extendObservable(this, {...INITIAL_STATE})
   }
 
   @action.bound
@@ -68,21 +51,24 @@ class FilterScreenStore {
   }
 
   @action
+  async setLocation() {
+    this.location = await this.getLocation();
+  }
+
+  @action
   async reset() {
     console.log("Resetting")
-    this.minPrice = INITIAL_STATE.minPrice
-    this.maxPrice = INITIAL_STATE.maxPrice
-    this.minYear = INITIAL_STATE.minYear
-    this.maxYear = INITIAL_STATE.maxYear
-    this.minMiles = INITIAL_STATE.minMiles
-    this.maxMiles = INITIAL_STATE.maxMiles
-    this.location = await this.getLocation()
+    for (key in INITIAL_STATE) {
+      this[key] = INITIAL_STATE[key]
+    }
+    await this.setLocation();
   }
 }
 
 var s = new FilterScreenStore();
-s.reset().then(() => {hydrate('FilterScreenKey', s)})
+const persistStore = persist(SCHEMA)(s);
+hydrate('FilterScreenKey', persistStore).then(() => {
+  persistStore.location ? console.log("Location already set to = ", persistStore.location) : persistStore.setLocation();
+});
 
-
-
-export default s;
+export default persistStore;

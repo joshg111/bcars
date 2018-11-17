@@ -67,24 +67,24 @@ export default class FilterScreen extends React.Component {
         <View style={[styles.filterCard]}>
           <Text style={styles.filterTitle}>Price</Text>
           <View style={styles.subGroup}>
-            <NumberInput state="minPrice" placeholder="0" name="Min"/>
-            <NumberInput state="maxPrice" placeholder="8000" name="Max"/>
+            <NumberInput state="min_price" placeholder="0" name="Min"/>
+            <NumberInput state="max_price" placeholder="8000" name="Max"/>
           </View>
         </View>
 
         <View style={[styles.filterCard]}>
           <Text style={[styles.filterTitle]}>Year</Text>
           <View style={styles.subGroup}>
-            <NumberInput state="minYear" placeholder="2000" name="Min"/>
-            <NumberInput state="maxYear" placeholder="2018" name="Max"/>
+            <NumberInput state="min_auto_year" placeholder="2000" name="Min"/>
+            <NumberInput state="max_auto_year" placeholder="2018" name="Max"/>
           </View>
         </View>
 
         <View style={[styles.filterCard]}>
           <Text style={[styles.filterTitle]}>Miles</Text>
           <View style={styles.subGroup}>
-            <NumberInput state="minMiles" placeholder="0" name="Min"/>
-            <NumberInput state="maxMiles" placeholder="150000" name="Max"/>
+            <NumberInput state="min_auto_miles" placeholder="0" name="Min"/>
+            <NumberInput state="max_auto_miles" placeholder="150000" name="Max"/>
           </View>
         </View>
 
