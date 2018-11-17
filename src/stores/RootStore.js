@@ -4,13 +4,23 @@ import { create, persist } from 'mobx-persist'
 import { AsyncStorage } from 'react-native';
 
 
+// const INITIAL_STATE = {
+//   min_price: "0",
+//   max_price: "20000",
+//   min_auto_year: "2002",
+//   max_auto_year: "2018",
+//   min_auto_miles: "0",
+//   max_auto_miles: "180000",
+//   location: ""
+// }
+
 const INITIAL_STATE = {
-  min_price: "0",
-  max_price: "20000",
-  min_auto_year: "2002",
-  max_auto_year: "2018",
-  min_auto_miles: "0",
-  max_auto_miles: "180000",
+  min_price: "",
+  max_price: "",
+  min_auto_year: "",
+  max_auto_year: "",
+  min_auto_miles: "",
+  max_auto_miles: "",
   location: ""
 }
 
