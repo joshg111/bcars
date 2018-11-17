@@ -45,6 +45,8 @@ const numStyles = StyleSheet.create({
 });
 
 
+@inject("store")
+@observer
 export default class FilterScreen extends React.Component {
   static navigationOptions = {
       title: 'Filter',
@@ -57,26 +59,6 @@ export default class FilterScreen extends React.Component {
       headerRightContainerStyle: {margin: 10}
     };
 
-  async componentWillMount() {
-
-    var location = await this.getLocation();
-    this.state = {location}
-  }
-
-  async getLocation() {
-    let response;
-    try {
-      response = await fetch('https://geo.craigslist.org/');
-    }
-    catch(e) {
-      throw e
-    }
-
-    console.log("response = ", response);
-    res = response.headers.get('set-cookie').replace(/cl_def_hp=(.*?);.*/g, '$1');
-    console.log("location = ", res);
-  	return res;
-  }
 
   render() {
     return (
@@ -106,10 +88,28 @@ export default class FilterScreen extends React.Component {
           </View>
         </View>
 
+        <View style={[styles.filterCard]}>
+          <Text style={[styles.filterTitle]}>Location</Text>
+          <View style={numStyles.container}>
+            <TextInput
+              style={{backgroundColor: 'white', height: 40}}
+              placeholder='Craigslist citry'
+              onChangeText={(text) => this.props.store.location = text}
+              value={this.props.store.location}
+            />
+          </View>
+        </View>
+
         <View style={{marginTop: 20}}>
           <Button
             onPress={() => this.props.navigation.goBack()}
             title="Done"
+          />
+        </View>
+        <View style={{marginVertical: 20}}>
+          <Button
+            onPress={() => this.props.store.reset()}
+            title="Reset"
           />
         </View>
       </ScrollView>
