@@ -2,6 +2,7 @@ import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
 import findAutocompletes from '../search/autocomplete'
 import { MaterialIcons } from '@expo/vector-icons';
+import { withNavigation } from 'react-navigation';
 
 
 
@@ -50,7 +51,7 @@ class MyListItem extends React.PureComponent {
   }
 }
 
-
+@withNavigation
 class Autocomplete extends React.Component {
 
   constructor(props) {
@@ -114,7 +115,10 @@ class Autocomplete extends React.Component {
           ref={(input) => this.textInput = input}
         />
 
-        <TouchableOpacity style={{flex: 1}}>
+        <TouchableOpacity
+          style={{flex: 1}}
+          onPress={() => this.props.navigation.navigate('Results')}
+          >
           <MaterialIcons  name="search" size={32} color="black" />
         </TouchableOpacity>
 
@@ -136,11 +140,22 @@ class Autocomplete extends React.Component {
 }
 
 export default class SearchScreen extends React.Component {
-  static navigationOptions = {
+
+  static navigationOptions = ({navigation}) => {
+    return {
       title: 'Search',
+      headerRight: (
+        <Button
+          onPress={() => navigation.navigate('Filter')}
+          title="Filter"
+        />
+      ),
+      headerRightContainerStyle: {margin: 10}
     };
+  };
 
   render() {
+    console.log(this.props.navigation);
     return (
       <View style={styles.container}>
 

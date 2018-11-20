@@ -48,16 +48,18 @@ const numStyles = StyleSheet.create({
 @inject("store")
 @observer
 export default class FilterScreen extends React.Component {
-  static navigationOptions = {
+  static navigationOptions = ({navigation}) => {
+    return {
       title: 'Filter',
       headerRight: (
         <Button
-          onPress={() => this.props.navigation.goBack()}
+          onPress={() => navigation.goBack()}
           title="Done"
         />
       ),
       headerRightContainerStyle: {margin: 10}
     };
+  };
 
 
   render() {
