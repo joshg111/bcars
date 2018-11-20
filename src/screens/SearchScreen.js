@@ -111,7 +111,7 @@ class Autocomplete extends React.Component {
           placeholder='Toyota sedan'
           autoFocus={true}
           returnKeyType={'search'}
-          onSubmitEditing={() => console.log('hi')}
+          onSubmitEditing={() => this.props.navigation.navigate('Results')}
           ref={(input) => this.textInput = input}
         />
 
