@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ScrollView, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
+import { Image, ScrollView, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
 import { observer, inject } from 'mobx-react'
 
 
@@ -63,6 +63,14 @@ export default class FilterScreen extends React.Component {
 
 
   render() {
+    if (this.props.store.loadingPersist) {
+      return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column',}}>
+          <Text style={{fontSize: 20,}}>Loading</Text>
+          <Image source={require('../../3WFM.gif')} />
+        </View>
+      );
+    }
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container} keyboardVerticalOffset={100} enabled>
         <ScrollView keyboardShouldPersistTaps='handled'>
@@ -95,7 +103,7 @@ export default class FilterScreen extends React.Component {
           <View style={numStyles.container}>
             <TextInput
               style={{backgroundColor: 'white', height: 40}}
-              placeholder='Craigslist citry'
+              placeholder='Craigslist city'
               onChangeText={(text) => this.props.store.location = text}
               value={this.props.store.location}
             />

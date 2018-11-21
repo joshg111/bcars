@@ -38,6 +38,9 @@ const hydrate = create({ storage: AsyncStorage })
 
 class FilterScreenStore {
 
+  @observable
+  loadingPersist = true;
+
   constructor() {
     extendObservable(this, {...INITIAL_STATE})
   }
@@ -79,6 +82,7 @@ var s = new FilterScreenStore();
 const persistStore = persist(SCHEMA)(s);
 hydrate('FilterScreenKey', persistStore).then(() => {
   persistStore.location ? console.log("Location already set to = ", persistStore.location) : persistStore.setLocation();
+  persistStore.loadingPersist = false;
 });
 
 export default persistStore;
