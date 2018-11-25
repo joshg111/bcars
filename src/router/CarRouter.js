@@ -13,6 +13,6 @@ export default createStackNavigator(
     Location: LocationScreen
   },
   {
-    initialRouteName: 'Results',
+    initialRouteName: 'Search',
   }
 );

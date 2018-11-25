@@ -21,6 +21,11 @@ async function getCars(params) {
     return null;
   }
 
+  if (!res.ok) {
+    console.log("Server failure");
+    return null;
+  }
+
   if(res !== null) {
     res = res.json();
   }
