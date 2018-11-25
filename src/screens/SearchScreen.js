@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, Touc
 import findAutocompletes from '../search/autocomplete'
 import { MaterialIcons } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
+import { observer, inject } from 'mobx-react'
 
 
 
@@ -60,7 +61,6 @@ class Autocomplete extends React.Component {
     }
 
   _onPressItem = (key) => {
-    // this.setState({text: key});
     this.onChangeText(key);
     this.textInput.focus();
   };
@@ -96,13 +96,15 @@ class Autocomplete extends React.Component {
 
   }
 
+  gotoResults() {
+    this.props.navigation.navigate('Results', {
+      query: this.state.text
+    });
+  }
+
   render() {
-
-
-
     return (
-      <KeyboardAvoidingView style={styles.autocomplete} behavior='padding' keyboardVerticalOffset={100}>
-
+      <View style={[styles.autocomplete]}>
         <View style={{flexDirection: 'row'}}>
         <TextInput
           style={{flex: 8, height: 40, borderColor: 'purple', borderWidth: 1}}
@@ -111,13 +113,13 @@ class Autocomplete extends React.Component {
           placeholder='Toyota sedan'
           autoFocus={true}
           returnKeyType={'search'}
-          onSubmitEditing={() => this.props.navigation.navigate('Results')}
+          onSubmitEditing={this.gotoResults.bind(this)}
           ref={(input) => this.textInput = input}
         />
 
         <TouchableOpacity
           style={{flex: 1}}
-          onPress={() => this.props.navigation.navigate('Results')}
+          onPress={this.gotoResults.bind(this)}
           >
           <MaterialIcons  name="search" size={32} color="black" />
         </TouchableOpacity>
@@ -133,12 +135,14 @@ class Autocomplete extends React.Component {
           ItemSeparatorComponent={this.renderSeparator}
         />
 
-      </KeyboardAvoidingView>
+    </View>
 
     );
   }
 }
 
+@inject("store")
+@observer
 export default class SearchScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => {
@@ -155,13 +159,19 @@ export default class SearchScreen extends React.Component {
   };
 
   render() {
-    console.log(this.props.navigation);
-    return (
-      <View style={styles.container}>
 
+    return (
+      <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={100}>
+        <View style={{height: 35, marginTop: 10,flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start',marginHorizontal: 40}}>
+          <Text style={{fontSize: 20, marginRight: 10}}>{this.props.store.location}</Text>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Location')}>
+            <MaterialIcons name="edit" size={32} color="black" />
+          </TouchableOpacity>
+
+        </View>
           <Autocomplete/>
 
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -178,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
-    marginTop: 40,
+    marginTop: 10,
     marginHorizontal: 40
   },
   autoText: {

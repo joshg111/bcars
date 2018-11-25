@@ -57,7 +57,7 @@ export default class FilterScreen extends React.Component {
           title="Done"
         />
       ),
-      headerRightContainerStyle: {margin: 10}
+      headerRightContainerStyle: {marginHorizontal: 10}
     };
   };
 
@@ -95,18 +95,6 @@ export default class FilterScreen extends React.Component {
           <View style={styles.subGroup}>
             <NumberInput state="min_auto_miles" placeholder="0" name="Min"/>
             <NumberInput state="max_auto_miles" placeholder="150000" name="Max"/>
-          </View>
-        </View>
-
-        <View style={[styles.filterCard]}>
-          <Text style={[styles.filterTitle]}>Location</Text>
-          <View style={numStyles.container}>
-            <TextInput
-              style={{backgroundColor: 'white', height: 40}}
-              placeholder='Craigslist city'
-              onChangeText={(text) => this.props.store.location = text}
-              value={this.props.store.location}
-            />
           </View>
         </View>
 

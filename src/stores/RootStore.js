@@ -14,14 +14,13 @@ import { AsyncStorage } from 'react-native';
 //   location: ""
 // }
 
-const INITIAL_STATE = {
+export const FILTER_STATE = {
   min_price: "",
   max_price: "",
   min_auto_year: "",
   max_auto_year: "",
   min_auto_miles: "",
-  max_auto_miles: "",
-  location: ""
+  max_auto_miles: ""
 }
 
 const SCHEMA = {
@@ -41,8 +40,11 @@ class FilterScreenStore {
   @observable
   loadingPersist = true;
 
+  @observable
+  location = ""
+
   constructor() {
-    extendObservable(this, {...INITIAL_STATE})
+    extendObservable(this, {...FILTER_STATE})
   }
 
   @action.bound
@@ -56,6 +58,7 @@ class FilterScreenStore {
     }
 
     console.log("response = ", response);
+    console.log("headers = ", response.headers);
     // res = response.headers.get('set-cookie').replace(/cl_def_hp=(.*?);.*/g, '$1');
     var regex = /:\/\/(.*?)\./;
     res = response.url.match(regex)[1]
@@ -71,8 +74,8 @@ class FilterScreenStore {
   @action
   async reset() {
     console.log("Resetting")
-    for (key in INITIAL_STATE) {
-      this[key] = INITIAL_STATE[key]
+    for (key in FILTER_STATE) {
+      this[key] = FILTER_STATE[key]
     }
     await this.setLocation();
   }

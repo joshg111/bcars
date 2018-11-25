@@ -1,7 +1,9 @@
 // var AWS = require('aws-sdk');
 
 
-async function get_cars(params) {
+async function getCars(params) {
+  console.log(params);
+
   var res = null;
   try {
     res = await fetch('https://q62fhm3rwk.execute-api.us-east-1.amazonaws.com/dev/cars',
@@ -55,4 +57,4 @@ async function get_cars(params) {
 //   });
 // }
 
-export default get_cars;
+export default getCars;
