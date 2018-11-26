@@ -7,7 +7,7 @@ import findAutocompletes from '../search/searchLocations'
 
 class MyListItem extends React.PureComponent {
   _onPress = () => {
-    this.props.onPressItem(this.props.kept + this.props.replaced);
+    this.props.onPressItem(this.props.replaced);
   };
 
   styleReplaced() {
@@ -107,6 +107,8 @@ class LocationScreen extends Component {
 
   async onChangeText(text) {
 
+    text = text.replace(/[\s]/g, '');
+    text = text.toLowerCase();
     this.props.store.location = text;
 
     this.setState({autocompletes: await findAutocompletes(text)});

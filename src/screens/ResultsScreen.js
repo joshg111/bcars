@@ -48,8 +48,11 @@ class MyListItem extends React.PureComponent {
     return (
     <View style={{flex:1, alignItems: 'center',margin: 10, backgroundColor: 'white',}}>
       <View style={{flex: 1,flexDirection: 'column', alignSelf: 'flex-start', justifyContent: 'space-between'}}>
-        <Text style={{fontSize: 22,paddingLeft:10, paddingTop:10, paddingRight:10}}>
-          {rowData.desc} ${rowData.price}
+        <Text style={{fontSize: 22,paddingHorizontal: 10, paddingTop:10, fontWeight: 'bold'}}>
+           ${rowData.price}
+        </Text>
+        <Text style={{fontSize: 22,paddingHorizontal: 10}}>
+          {rowData.year} {rowData.kbbMake} {rowData.kbbModel}
         </Text>
         {this.renderPercentage(rowData.percentAboveKbb)}
       </View>

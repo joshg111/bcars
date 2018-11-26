@@ -1,6 +1,7 @@
 import React from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
 import findAutocompletes from '../search/autocomplete'
+import locations from '../search/locations'
 import { MaterialIcons } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
 import { observer, inject } from 'mobx-react'
@@ -53,6 +54,8 @@ class MyListItem extends React.PureComponent {
 }
 
 @withNavigation
+@inject("store")
+@observer
 class Autocomplete extends React.Component {
 
   constructor(props) {
@@ -102,6 +105,10 @@ class Autocomplete extends React.Component {
     });
   }
 
+  isLocationValid() {
+    return locations.includes(this.props.store.location);
+  }
+
   render() {
     return (
       <View style={[styles.autocomplete]}>
@@ -115,13 +122,15 @@ class Autocomplete extends React.Component {
           returnKeyType={'search'}
           onSubmitEditing={this.gotoResults.bind(this)}
           ref={(input) => this.textInput = input}
+          editable={this.isLocationValid()}
         />
 
         <TouchableOpacity
           style={{flex: 1}}
           onPress={this.gotoResults.bind(this)}
+          disabled={!this.isLocationValid()}
           >
-          <MaterialIcons  name="search" size={32} color="black" />
+          <MaterialIcons name="search" size={32} color="black" />
         </TouchableOpacity>
 
         </View>
@@ -158,19 +167,54 @@ export default class SearchScreen extends React.Component {
     };
   };
 
+  renderLocationError() {
+    if (!this.isLocationValid()) {
+      return (
+        <Text style={{color: 'red',fontSize: 20,}}>Invalid City</Text>
+      );
+    }
+    return null;
+  }
+
+  isLocationValid() {
+    return locations.includes(this.props.store.location);
+  }
+
   render() {
+    if (this.props.store.loadingPersist) {
+      return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column',}}>
+          <Text style={{fontSize: 20,}}>Loading</Text>
+          <Image source={require('../../3WFM.gif')} />
+        </View>
+      );
+    }
 
     return (
       <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={100}>
-        <View style={{height: 35, marginTop: 10,flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start',marginHorizontal: 40}}>
-          <Text style={{fontSize: 20, marginRight: 10}}>{this.props.store.location}</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Location')}>
-            <MaterialIcons name="edit" size={32} color="black" />
-          </TouchableOpacity>
+        <View style={styles.subContainer}>
+          {this.renderLocationError()}
+          <View style={[{
+              height: 35,
+              marginTop: 10,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              alignSelf: 'flex-start'},
+              !this.isLocationValid() ?
+              {
+                borderColor: 'red',
+                borderBottomWidth: 2,
+              } : null
+            ]}>
+            <Text style={{fontSize: 20, marginRight: 10}}>{this.props.store.location}</Text>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Location')}>
+              <MaterialIcons name="edit" size={32} color="black" />
+            </TouchableOpacity>
 
-        </View>
+          </View>
           <Autocomplete/>
-
+        </View>
       </KeyboardAvoidingView>
     );
   }
@@ -183,13 +227,20 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'flex-start',
   },
+  subContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    marginTop: 10,
+    marginHorizontal: 40,
+  },
   autocomplete: {
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     marginTop: 10,
-    marginHorizontal: 40
   },
   autoText: {
     fontSize: 22
