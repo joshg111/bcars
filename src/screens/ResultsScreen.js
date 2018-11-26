@@ -70,6 +70,10 @@ class MyListItem extends React.PureComponent {
 
         <View style={{flex: 1, flexDirection: 'row', marginBottom: 10, justifyContent: 'flex-start',flexWrap: 'wrap',}}>
           <View style={{flexDirection: 'row',}}>
+            <Text style={{color:"blue"}}>Description: </Text>
+            <Text>{rowData.desc ? rowData.desc : 'unknown'} </Text>
+          </View>
+          <View style={{flexDirection: 'row',}}>
             <Text style={{color:"blue"}}>Odometer: </Text>
             <Text>{rowData.odometer ? rowData.odometer : 'unknown'} </Text>
           </View>
