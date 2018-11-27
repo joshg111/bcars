@@ -63,6 +63,14 @@ class Autocomplete extends React.Component {
       this.state = { text: '', autocompletes: []};
     }
 
+  componentDidMount() {
+    this.focusListener = this.props.navigation.addListener('didFocus', () => this.textInput.focus());
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
+  }
+
   _onPressItem = (key) => {
     this.onChangeText(key);
     this.textInput.focus();

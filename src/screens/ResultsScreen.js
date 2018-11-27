@@ -208,11 +208,11 @@ class ResultsScreen extends Component {
   }
 
   isError() {
-    return !this.state.carRsp.ok;
+    return this.state.carRsp == null;
   }
 
-  getCars() {
-    return this.state.carRsp.json().cars;
+  getCarList() {
+    return this.state.carRsp.cars;
   }
 
   render() {
@@ -235,9 +235,9 @@ class ResultsScreen extends Component {
       );
     }
 
-    var cars = this.getCars();
+    var cars = this.getCarList();
 
-    if (!cars) {
+    if (!cars || cars.length == 0) {
       return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column',}}>
           <Text style={{fontSize: 20,}}>No cars found</Text>
