@@ -108,7 +108,7 @@ class LocationScreen extends Component {
   async onChangeText(text) {
     var res = text.replace(/[\s]/g, '');
     // Changing to lower case causes some strange autocomplete problem i think.
-    res = res.toLowerCase();
+    // res = res.toLowerCase();
     this.props.store.location = res;
 
     this.setState({autocompletes: await findAutocompletes(res)});
