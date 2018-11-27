@@ -1,7 +1,8 @@
-import { observable, action, runInAction, extendObservable } from "mobx";
+import { observable, action, runInAction, extendObservable, computed } from "mobx";
 import { observer, inject } from 'mobx-react'
 import { create, persist } from 'mobx-persist'
 import { AsyncStorage } from 'react-native';
+import locations from '../search/locations'
 
 
 // const INITIAL_STATE = {
@@ -47,6 +48,11 @@ class FilterScreenStore {
     extendObservable(this, {...FILTER_STATE})
   }
 
+  @computed
+  get isValidLocation() {
+    return locations.includes(this.location.toLowerCase());
+  }
+
   @action.bound
   async getLocation() {
     let response;
@@ -84,8 +90,16 @@ class FilterScreenStore {
 var s = new FilterScreenStore();
 const persistStore = persist(SCHEMA)(s);
 hydrate('FilterScreenKey', persistStore).then(() => {
-  persistStore.location ? console.log("Location already set to = ", persistStore.location) : persistStore.setLocation();
-  persistStore.loadingPersist = false;
+  if (persistStore.location) {
+    console.log("Location already set to = ", persistStore.location);
+    persistStore.loadingPersist = false;
+  }
+  else {
+    persistStore.setLocation().then(() => {
+      persistStore.loadingPersist = false;
+    });
+  }
+
 });
 
 export default persistStore;

@@ -137,7 +137,7 @@ class ResultsScreen extends Component {
       params[key] = store[key];
     }
 
-    var carData = await getCars(params);
+    var carRsp = await getCars(params);
 //     var carData = [{
 //   "condition": "new",
 //   "craigsLink": "https://sandiego.craigslist.org/csd/cto/d/honda-cr-2010/6744506842.html",
@@ -196,8 +196,7 @@ class ResultsScreen extends Component {
 
 
     // console.log("carData = ", carData);
-    carData = carData.cars;
-    this.setState({carData, loading: false});
+    this.setState({carRsp, loading: false});
   }
 
   renderItem({item}) {
@@ -208,7 +207,17 @@ class ResultsScreen extends Component {
     );
   }
 
+  isError() {
+    return !this.state.carRsp.ok;
+  }
+
+  getCars() {
+    return this.state.carRsp.json().cars;
+  }
+
   render() {
+    console.log("carData = ", this.state.carRsp);
+
     if (this.state.loading) {
       return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column',}}>
@@ -218,7 +227,7 @@ class ResultsScreen extends Component {
       );
     }
 
-    if (!this.state.carData) {
+    if (this.isError()) {
       return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column',}}>
           <Text style={{fontSize: 20,}}>Server Failure, try again</Text>
@@ -226,10 +235,20 @@ class ResultsScreen extends Component {
       );
     }
 
+    var cars = this.getCars();
+
+    if (!cars) {
+      return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column',}}>
+          <Text style={{fontSize: 20,}}>No cars found</Text>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.carData}
+          data={cars}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={(item, index) => index.toString()}
         />

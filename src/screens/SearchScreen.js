@@ -105,10 +105,6 @@ class Autocomplete extends React.Component {
     });
   }
 
-  isLocationValid() {
-    return locations.includes(this.props.store.location);
-  }
-
   render() {
     return (
       <View style={[styles.autocomplete]}>
@@ -122,13 +118,13 @@ class Autocomplete extends React.Component {
           returnKeyType={'search'}
           onSubmitEditing={this.gotoResults.bind(this)}
           ref={(input) => this.textInput = input}
-          editable={this.isLocationValid()}
+          editable={this.props.store.isValidLocation}
         />
 
         <TouchableOpacity
           style={{flex: 1}}
           onPress={this.gotoResults.bind(this)}
-          disabled={!this.isLocationValid()}
+          disabled={!this.props.store.isValidLocation}
           >
           <MaterialIcons name="search" size={32} color="black" />
         </TouchableOpacity>
@@ -168,16 +164,12 @@ export default class SearchScreen extends React.Component {
   };
 
   renderLocationError() {
-    if (!this.isLocationValid()) {
+    if (!this.props.store.isValidLocation) {
       return (
         <Text style={{color: 'red',fontSize: 20,}}>Invalid City</Text>
       );
     }
     return null;
-  }
-
-  isLocationValid() {
-    return locations.includes(this.props.store.location);
   }
 
   render() {
@@ -201,7 +193,7 @@ export default class SearchScreen extends React.Component {
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
               alignSelf: 'flex-start'},
-              !this.isLocationValid() ?
+              !this.props.store.isValidLocation ?
               {
                 borderColor: 'red',
                 borderBottomWidth: 2,

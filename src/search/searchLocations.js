@@ -67,8 +67,6 @@ function mapSearchResults(searchResults) {
 export default async function findAutocompletes(input) {
   var result = [];
 
-  console.log("input = ", input);
-
   var mapRes;
   if (input) {
     var fuseRes = fuse.search(input)

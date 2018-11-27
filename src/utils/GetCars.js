@@ -26,9 +26,9 @@ async function getCars(params) {
     return null;
   }
 
-  if(res !== null) {
-    res = res.json();
-  }
+  // if(res !== null) {
+  //   res = res.json();
+  // }
 
   console.log("res = ", res);
 

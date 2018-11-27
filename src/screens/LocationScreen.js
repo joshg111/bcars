@@ -106,12 +106,12 @@ class LocationScreen extends Component {
 
 
   async onChangeText(text) {
+    var res = text.replace(/[\s]/g, '');
+    // Changing to lower case causes some strange autocomplete problem i think.
+    res = res.toLowerCase();
+    this.props.store.location = res;
 
-    text = text.replace(/[\s]/g, '');
-    text = text.toLowerCase();
-    this.props.store.location = text;
-
-    this.setState({autocompletes: await findAutocompletes(text)});
+    this.setState({autocompletes: await findAutocompletes(res)});
 
   }
 
@@ -130,6 +130,8 @@ class LocationScreen extends Component {
             returnKeyType={'done'}
             onSubmitEditing={() => this.props.navigation.goBack()}
             ref={(input) => this.textInput = input}
+            autoCorrect={false}
+            autoCapitalize='none'
           />
 
 
