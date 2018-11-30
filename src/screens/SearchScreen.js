@@ -127,6 +127,7 @@ class Autocomplete extends React.Component {
           onSubmitEditing={this.gotoResults.bind(this)}
           ref={(input) => this.textInput = input}
           editable={this.props.store.isValidLocation}
+          autoCapitalize='none'
         />
 
         <TouchableOpacity

@@ -54,6 +54,7 @@ class MyListItem extends React.PureComponent {
         <Text style={{fontSize: 22,paddingHorizontal: 10}}>
           {rowData.year} {rowData.kbbMake} {rowData.kbbModel}
         </Text>
+        {rowData.kbbStyle ? <Text style={{fontSize: 22,paddingHorizontal: 10}}>{rowData.kbbStyle}</Text> : null}
         {this.renderPercentage(rowData.percentAboveKbb)}
       </View>
 
