@@ -11,19 +11,21 @@
     "generate": "rc-autocomplete"
   },
   "dependencies": {
-    "expo": "^30.0.1",
+    "expo": "^32.0.0",
     "fuse.js": "^3.2.1",
     "mobx": "^5.6.0",
     "mobx-persist": "^0.4.1",
     "mobx-react": "^5.3.6",
     "moment": "^2.22.2",
-    "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-timeago": "^0.4.0",
     "react-navigation": "^2.16.0"
   },
   "devDependencies": {
+    "@babel/preset-flow": "^7.0.0",
     "babel-cli": "^6.26.0",
+    "babel-preset-expo": "^5.1.1",
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.85.0",
     "react-autocomplete-cli": "0.0.3"

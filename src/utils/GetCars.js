@@ -6,7 +6,7 @@ async function getCars(params) {
 
   var res = null;
   try {
-    res = await fetch('https://q62fhm3rwk.execute-api.us-east-1.amazonaws.com/dev/cars',
+    res = await fetch('https://ohd0qf1x95.execute-api.us-east-1.amazonaws.com/dev/carlinks',
       {
         method: 'POST',
         headers: {
