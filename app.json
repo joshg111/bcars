@@ -4,8 +4,11 @@
     "description": "Searches cars on craigslist and finds the kelley blue book value for each car, then sorts the cars based on best value.",
     "slug": "bcars",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
-    "platforms": ["ios", "android"],
+    "sdkVersion": "36.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/c3.png",

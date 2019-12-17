@@ -71,7 +71,7 @@ class LocationScreen extends Component {
     this.state = { text: props.store.location, autocompletes: []};
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     this.setState({autocompletes: await findAutocompletes(this.props.store.location)})
   }
 

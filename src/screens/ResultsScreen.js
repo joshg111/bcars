@@ -128,7 +128,7 @@ class ResultsScreen extends Component {
       this.state = { carData: [], loading: true};
     }
 
-  async componentWillMount() {
+  async componentDidMount() {
     var store = this.props.store;
     params = {
       city: store.location,
