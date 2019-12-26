@@ -5,37 +5,51 @@ import getCars from '../utils/GetCars'
 import { observer, inject } from 'mobx-react'
 import {FILTER_STATE} from '../stores/RootStore'
 import TimeAgo from 'react-native-timeago';
+import { AntDesign } from '@expo/vector-icons';
 
 
 class MyListItem extends React.PureComponent {
 
-  rowStyle(percentage) {
-    var res = {fontSize: 18, paddingLeft:10, paddingBottom:10, paddingRight:10};
-    var color = "red";
-    if (percentage <= 0) {
-      color = "green"
-    }
-
-    res["color"] = color
-
-    return res;
-  }
-
-  renderPercentage(percentage)
+  renderKbbPrice(data)
   {
-    var modifierText = " above ";
+    var percentage = data.percentAboveKbb;
+    var color = "red";
     if (percentage <= 0 )
     {
-      modifierText = " below ";
+      color = "green";
     }
 
-    var percentageText = Math.abs(percentage).toString() + "%" + modifierText;
-    percentageText += "kelley blue book"
+    var percentageText = "Kelley Blue Book Price $" + data.kbbPrice;
 
     return (
-      <Text style={this.rowStyle(percentage)}>
-        {percentageText}
-      </Text>
+      <View style={{flexDirection: "row"}}>
+        <Text style={{fontSize: 18, paddingLeft:10, paddingBottom:10, paddingRight:10, color: color}}>
+          {percentageText}
+        </Text>
+      </View>
+    );
+  }
+
+  renderPercentage(data)
+  {
+    var percentage = data.percentAboveKbb;
+    var modifier = "caretup";
+    var color = "red";
+    if (percentage <= 0 )
+    {
+      modifier = "caretdown";
+      color = "green";
+    }
+
+    var percentageText = Math.abs(percentage).toString() + "%";
+
+    return (
+      <View style={{flexDirection: "row", backgroundColor: "white"}}>
+        <AntDesign name={modifier} size={18} color={color} />
+        <Text style={{fontSize: 22, color: color}}>
+          {percentageText}
+        </Text>
+      </View>
     );
   }
 
@@ -48,14 +62,17 @@ class MyListItem extends React.PureComponent {
     return (
     <View style={{flex:1, alignItems: 'center',margin: 10, backgroundColor: 'white',}}>
       <View style={{flex: 1,flexDirection: 'column', alignSelf: 'flex-start', justifyContent: 'space-between'}}>
-        <Text style={{fontSize: 22,paddingHorizontal: 10, paddingTop:10, fontWeight: 'bold'}}>
-           ${rowData.price}
-        </Text>
+        <View style={{flexDirection:"row", paddingHorizontal: 10, paddingTop:10}}>
+          <Text style={{fontSize: 22, fontWeight: 'bold'}}>
+            ${rowData.price}
+          </Text>
+          {this.renderPercentage(rowData)}
+        </View>
         <Text style={{fontSize: 22,paddingHorizontal: 10}}>
           {rowData.year} {rowData.kbbMake} {rowData.kbbModel}
         </Text>
         {rowData.kbbStyle ? <Text style={{fontSize: 22,paddingHorizontal: 10}}>{rowData.kbbStyle}</Text> : null}
-        {this.renderPercentage(rowData.percentAboveKbb)}
+        {this.renderKbbPrice(rowData)}
       </View>
 
       <View style={{flex:1, alignSelf: 'stretch'}}>
@@ -217,7 +234,7 @@ class ResultsScreen extends Component {
   }
 
   render() {
-    console.log("carData = ", this.state.carRsp);
+    // console.log("carData = ", this.state.carRsp);
 
     if (this.state.loading) {
       return (

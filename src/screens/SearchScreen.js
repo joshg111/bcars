@@ -168,7 +168,7 @@ export default class SearchScreen extends React.Component {
           title="Filter"
         />
       ),
-      headerRightContainerStyle: {margin: 10}
+      headerRightContainerStyle: {marginHorizontal: 10}
     };
   };
 

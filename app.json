@@ -2,7 +2,7 @@
   "expo": {
     "name": "Craigs Blue Book",
     "description": "Searches cars on craigslist and finds the kelley blue book value for each car, then sorts the cars based on best value.",
-    "slug": "bcars",
+    "slug": "craigsbluebook",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fivektechnologies.craigsbluebook"
+    },
+    "android": {
+      "package": "com.fivektechnologies.craigsbluebook",
+      "permissions": []
     }
   }
 }

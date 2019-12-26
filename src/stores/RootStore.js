@@ -63,8 +63,8 @@ class FilterScreenStore {
       throw e
     }
 
-    console.log("response = ", response);
-    console.log("headers = ", response.headers);
+    // console.log("response = ", response);
+    // console.log("headers = ", response.headers);
     // res = response.headers.get('set-cookie').replace(/cl_def_hp=(.*?);.*/g, '$1');
     var regex = /:\/\/(.*?)\./;
     res = response.url.match(regex)[1]
@@ -79,7 +79,7 @@ class FilterScreenStore {
 
   @action
   async reset() {
-    console.log("Resetting")
+    // console.log("Resetting")
     for (key in FILTER_STATE) {
       this[key] = FILTER_STATE[key]
     }
